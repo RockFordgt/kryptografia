@@ -23,3 +23,5 @@ qtcAddDeployment()
 
 OTHER_FILES += \
     qml/kryptografia/Kryptografia.qml
+
+RESOURCES +=

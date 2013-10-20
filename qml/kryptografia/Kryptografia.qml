@@ -2,7 +2,7 @@ import QtQuick 2.1
 import Qt.labs.presentation 1.0
 
 OpacityTransitionPresentation {
-    id:kryptografia
+    id:kryptografiaId
     fontFamily: "Oxygen"
     codeFontFamily: "OxygenMono"
 
@@ -39,7 +39,10 @@ OpacityTransitionPresentation {
         }
     }
 
-    //fontFamily: "OxygenSans"
+    Component.onCompleted: {
+        //console.log("parent:" + parent)
+        goToSlide(7);
+    }
     Slide{
         centeredText: "Kryptografia"
         fontScale: 4
@@ -85,6 +88,53 @@ brazylijski Petrobras"
             " Uzgodnienie i wymiana klucza",
             " Ilość kluczy: n(n-1)/2",
         ]
+        ListModel{
+            id:iloscKluczy
+            ListElement{src:"Keys_02.svg"}
+            ListElement{src:"Keys_03.svg"}
+            ListElement{src:"Keys_04.svg"}
+            ListElement{src:"Keys_05.svg"}
+        }
+//        Rectangle{
+
+//            anchors.right: parent.right
+//            anchors.bottom: parent.bottom
+//            width:350
+//            height: 350
+//            color:"transparent"
+            Image{
+                id:kluczeImg
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                //source: "Keys_01.svg"
+                width: 350
+                height: width
+            }
+            Timer{
+                id:keysTimer
+                interval: 1000
+                repeat: true
+                property int current:0
+                onTriggered: {
+
+                    if(current>=iloscKluczy.count){
+                        current=0;
+                    }
+                    kluczeImg.source = iloscKluczy.get(current).src
+                    current++;
+                    //console.log("i:"+current)
+                }
+            }
+            onVisibleChanged: {
+                //console.log("visible:" + visible)
+                if(visible){
+                    keysTimer.current = 0;
+                    keysTimer.start();
+                }else
+                    keysTimer.stop();
+            }
+
+//        }
     }
     Slide{
         title: "Szyfry Asymetryczne"
@@ -95,14 +145,134 @@ brazylijski Petrobras"
             "Wady",
             " Małe przestrzenie klucza",
             "  3000 bitów to przestrzeń porównywalna do 128bitowego klucza symtrycznego",
-            " Bardzo wolne operacje szyfowania i deszyfrowania"
+            " Bardzo wolne operacje szyfowania i deszyfrowania (ok 1000x)"
         ]
+    }
+    Slide{
+        title: "Szyfry Asymetryczne"
+
+        Column{
+            anchors.fill: parent
+            SlideText{
+                id:t1
+                text:"Każda osoba generuje parę kluczy:"
+            }
+            Row{
+                width: parent.width
+                spacing: 50
+                Column{
+                    width: parent.width/2
+//                    height: 300
+                    Image{
+                        id: i2
+                        width:100
+                        height:100
+                        source: "barretr_Key.svg"
+                    }
+                    SlideText{
+                        anchors.horizontalCenter: i2.horizontalCenter
+                        text:"Prywatny"
+                    }
+                    SlideText{
+                        width:parent.width-20
+                        wrapMode: Text.WordWrap
+                        fontScale: 0.9
+                        text: "Służy do deszyfrowania (otwiera kłódkę) lub podpisywania wiadomości.
+Powinien być zabezpieczony hasłem."
+                    }
+                    Rectangle{
+                        x:parent.x - 20
+                        width: parent.width+20
+                        height: t2.height+20
+                        color: "#80FFFF00"
+                        //color:"blue"
+                        //border.color: "Yellow"
+                        //border.width: 1
+                        SlideText{
+                            id:t2
+                            anchors.verticalCenter: parent.verticalCenter
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.leftMargin: 15
+                            //width: parent.width
+                            //wrapMode: Text.WordWrap
+                            fontScale:0.9
+                            text:"Kluczem prywatnym nie wolno się dzielić."
+                        }
+                    }
+                }
+                Column{
+                    width: parent.width/2
+//                    width: 300
+//                    height: 300
+
+                    Image{
+                        id: i1
+                        width:100
+                        height:100
+                        source: "Secure_Light_Silver_open.svg"
+                    }
+                    SlideText{
+                        anchors.horizontalCenter: i1.horizontalCenter
+                        text:"Publiczny"
+                    }
+                    SlideText{
+                        width:parent.width-20
+                        wrapMode: Text.WordWrap
+                        fontScale: 0.9
+                        text: "Klucz rozdaje się wszystkim, najłatwiej poprzez serwer kluczy.
+Wszyscy szyfrują naszym kluczem publicznym wiadomości do nas. Tylko odpowiedni klucz prywatny może
+odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
+                    }
+                }
+            }
+        }
     }
     Slide{
         title: "Szyfry Mieszane"
         content:[
-            "Używamy klyczy symetrycznych i asymetrycznych jednocześnie",
-            ""
+            "W praktyce używa się rodzajów algorytmów na raz:",
+            " Wiadomość szyfrujemy symetrycznie, losowym kluczem tzw kluczem sesji.",
+            " klucz sesji szyfrujemy kluczem publicznym odbiorcy",
+            " łączymy zaszyfrowną wiadomość i zaszyfrowany klucz sesji",
+            " przygotowane dane wysyłamy odbiorcy"
         ]
+    }
+    Slide{
+        title: "Algorytmy szyfrujące"
+        Row{
+            anchors.fill: parent
+            spacing: 50
+            Column{
+                width: parent.width/2
+                SlideText{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text:"Symetryczne"
+                }
+                SlideText{
+                    fontScale:0.6
+                    text: "- DES
+- 3DES
+- IDEA
+- ASE
+- Blowfish
+- Serpent
+- Twofish"
+                }
+            }
+            Column{
+                width: parent.width/2
+                SlideText{
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    text:"Asymetryczne (pubilic key)"
+                }
+                SlideText{
+                    fontScale:0.6
+                    text:"- RSA
+- Diffie-hellman (wimana kluczy sym.)
+- DSA
+- ElGamal"
+                }
+            }
+        }
     }
 }

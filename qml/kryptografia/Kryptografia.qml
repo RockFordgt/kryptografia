@@ -1,5 +1,6 @@
 import QtQuick 2.1
 import Qt.labs.presentation 1.0
+import QtGraphicalEffects 1.0
 
 OpacityTransitionPresentation {
     id:kryptografiaId
@@ -41,7 +42,7 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(7);
+        goToSlide(6);
     }
     Slide{
         centeredText: "Kryptografia"
@@ -180,25 +181,41 @@ brazylijski Petrobras"
                         text: "Służy do deszyfrowania (otwiera kłódkę) lub podpisywania wiadomości.
 Powinien być zabezpieczony hasłem."
                     }
-                    Rectangle{
-                        x:parent.x - 20
-                        width: parent.width+20
-                        height: t2.height+20
-                        color: "#80FFFF00"
-                        //color:"blue"
-                        //border.color: "Yellow"
-                        //border.width: 1
-                        SlideText{
-                            id:t2
-                            anchors.verticalCenter: parent.verticalCenter
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.leftMargin: 15
-                            //width: parent.width
-                            //wrapMode: Text.WordWrap
-                            fontScale:0.9
-                            text:"Kluczem prywatnym nie wolno się dzielić."
+                    Item{
+                        width: parent.width
+                        height: t2.height
+                        //color: "transparent"
+                    SlideText{
+                        id:t2
+//                        anchors.verticalCenter: parent.verticalCenter
+//                        anchors.horizontalCenter: parent.horizontalCenter
+//                        anchors.leftMargin: 15
+                        //width: parent.width
+                        //wrapMode: Text.WordWrap
+                        fontScale:0.9
+                        text:"Kluczem prywatnym nie wolno się dzielić."
+                        visible: false
+                    }
+                    Glow{
+                        source: t2
+                        samples: 32
+                        color:"Red"
+                        anchors.fill: parent
+                        spread:0.7
+                        SequentialAnimation on radius {
+                            NumberAnimation{
+                                to: 16
+                                duration:1300
+                            }
+                            NumberAnimation{
+                                to:0
+                                duration:800
+                            }
+                            loops: Animation.Infinite
                         }
                     }
+                    }
+
                 }
                 Column{
                     width: parent.width/2
@@ -230,12 +247,51 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
     Slide{
         title: "Szyfry Mieszane"
         content:[
-            "W praktyce używa się rodzajów algorytmów na raz:",
-            " Wiadomość szyfrujemy symetrycznie, losowym kluczem tzw kluczem sesji.",
+            "W praktyce używa się obu rodzajów algorytmów na raz:",
+            " Wiadomość szyfrujemy symetrycznie, losowym kluczem (tzw. kluczem sesji).",
             " klucz sesji szyfrujemy kluczem publicznym odbiorcy",
             " łączymy zaszyfrowną wiadomość i zaszyfrowany klucz sesji",
             " przygotowane dane wysyłamy odbiorcy"
         ]
+        Image {
+            id: cryptFileAnimation
+            property int currentFrame: 0
+            source: cryptAnimationFrames.get(currentFrame).src
+            width: parent.width*0.7
+            height: parent.height/2
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    console.log("count:" + cryptAnimationFrames.count)
+                    console.log("current:" + cryptFileAnimation.currentFrame)
+//                    console.log("button:" + mouse.button)
+                    if(mouse.button === Qt.LeftButton){
+                        //if(cryptFileAnimation.currentFrame <= cryptAnimationFrames.count - 2)
+                         cryptFileAnimation.currentFrame =(cryptFileAnimation.currentFrame == cryptAnimationFrames.count - 1) ? 0 : cryptFileAnimation.currentFrame+1
+                    } else if( mouse.button === Qt.RightButton){
+                        if(cryptFileAnimation.currentFrame >= 1)
+                            cryptFileAnimation.currentFrame--;
+                    }
+                }
+            }
+        }
+        ListModel{
+            id:cryptAnimationFrames
+            ListElement{src:"msg_crypt_hybrid_00.svg"}
+            ListElement{src:"msg_crypt_hybrid_01.svg"}
+            ListElement{src:"msg_crypt_hybrid_02.svg"}
+            ListElement{src:"msg_crypt_hybrid_03.svg"}
+            ListElement{src:"msg_crypt_hybrid_04.svg"}
+            ListElement{src:"msg_crypt_hybrid_05.svg"}
+            ListElement{src:"msg_crypt_hybrid_06.svg"}
+            ListElement{src:"msg_crypt_hybrid_07.svg"}
+            ListElement{src:"msg_crypt_hybrid_08.svg"}
+            ListElement{src:"msg_crypt_hybrid_09.svg"}
+            ListElement{src:"msg_crypt_hybrid_10.svg"}
+            ListElement{src:"msg_crypt_hybrid_11.svg"}
+            ListElement{src:"msg_crypt_hybrid_12.svg"}
+        }
     }
     Slide{
         title: "Algorytmy szyfrujące"
@@ -274,5 +330,21 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
                 }
             }
         }
+    }
+    Slide{
+        title: "Funkcje Skrótu"
+        content: [
+            "Inne nazwy:",
+            " funkcja haszująca",
+            " funkcja mieszjąca",
+            "Cechy",
+            " Jednokierunkowość",
+            " Odporność na kolizje",
+            "W kryptografi służą do weryfikacji danych",
+            "najpopularniejsze obecnie funkcje skrótu",
+            " MD5",
+            " SHA"
+        ]
+
     }
 }

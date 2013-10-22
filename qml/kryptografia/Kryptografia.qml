@@ -42,9 +42,10 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(6);
+        goToSlide(14);
     }
     Slide{
+        id:slide_00
         centeredText: "Kryptografia"
         fontScale: 4
         Text{
@@ -55,8 +56,8 @@ v 1.0"
             color:"#bbb"
         }
     }
-
     Slide{
+        id:slide_01
         title: "Kryptografia"
         //centeredText: "Who am I?"
         content:[
@@ -68,6 +69,7 @@ v 1.0"
 brazylijski Petrobras"
     }
     Slide{
+        id:slide_02
         title: "Pojęcia podstawowe"
         content:[
             "Szyfry Symetryczne",
@@ -78,6 +80,7 @@ brazylijski Petrobras"
         ]
     }
     Slide{
+        id:slide_03
         title: "Szyfry Symetryczne"
         content:[
             "Zalety",
@@ -138,6 +141,7 @@ brazylijski Petrobras"
 //        }
     }
     Slide{
+        id:slide_04
         title: "Szyfry Asymetryczne"
         content: [
             "Zalety",
@@ -150,6 +154,7 @@ brazylijski Petrobras"
         ]
     }
     Slide{
+        id:slide_05
         title: "Szyfry Asymetryczne"
 
         Column{
@@ -245,6 +250,7 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
         }
     }
     Slide{
+        id:slide_06
         title: "Szyfry Mieszane"
         content:[
             "W praktyce używa się obu rodzajów algorytmów na raz:",
@@ -294,6 +300,7 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
         }
     }
     Slide{
+        id:slide_07
         title: "Algorytmy szyfrujące"
         Row{
             anchors.fill: parent
@@ -332,19 +339,162 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
         }
     }
     Slide{
+        id:slide_08
         title: "Funkcje Skrótu"
         content: [
             "Inne nazwy:",
             " funkcja haszująca",
             " funkcja mieszjąca",
+            " \"odcisk palca\"",
             "Cechy",
             " Jednokierunkowość",
             " Odporność na kolizje",
             "W kryptografi służą do weryfikacji danych",
-            "najpopularniejsze obecnie funkcje skrótu",
-            " MD5",
-            " SHA"
         ]
-
+    }
+    Slide{
+        id:slide_09
+        title: "Funkcje Skrótu"
+        content:[
+            "najpopularniejsze obecnie funkcje skrótu",
+            " SHA-2 (Secure Hash Algorithm)",
+            " MD5   (Message Digest) - złamany nie używać do szyforwania",
+            " http://en.wikipedia.org/wiki/Comparison_of_cryptographic_hash_functions"
+        ]
+    }
+    Slide{
+        id: slide_10
+        title: "Podpis cyfrowy"
+        content:[
+            "Podpis cyfrowy to nie jest skan ręcznego podpisu",
+            "Najpopularniejsze algorytmy",
+            " RSA - ten sam klucz może być użyty do szyfrowania i podpisywania",
+            " DLSS - Discrete Logarithm Signature Systems - tylko podpisywanie.",
+            "  ElGamal",
+            "  DSA",
+            "  Krzywe Eliptyczne"
+        ]
+    }
+    Slide{
+        id: slide_12
+        title: "Podpis cyforwy"
+        content:[
+            "Jak działa podpis w RSA?",
+            " oryginalny dokument \"deszyfrujemy\" swoim kluczem prywatnym",
+            " wysyłamy wiadomość zawierającą oryginalny dokument i \"odszyfrowany\"",
+            " odbiorca szyfruje \"odszyfrowany\" dokument i sprawdza z oryginałem",
+            "  jeśli oba dokumenty są identyczne -> podpis zgadza się",
+            "Wady?",
+            " RSA jest baaaaardzo wolne"
+        ]
+    }
+    Slide{
+        id: slide_13
+        title: "Podpis cyfrowy"
+        content:[
+            "Najważniejsze różnice między RSA a DLSS",
+            " RSA służy do szyfrowania i podpisywania, DLSS tylko do podpisywania",
+            " RSA jest szybsze",
+            " dla RSA klucze długości od 768 do 1024 bitów są wystarczające",
+            " DLSS wystarczają jeszcze którtsze klucze",
+            " DLSS wymagają losowej liczby do każdego podpisu",
+            " RSA wymage \"tylko\" losowego klucza"
+        ]
+    }
+    Slide{
+        id: slide_14
+        title: "Podpis cyfrowy w praktyce"
+        content:[
+            "Podpisanie wiadomości z załączikiem może bardzo długo trwać",
+            "Rozwiązanie:",
+            " Generujemy \"odcisk\" wiadomości",
+            " podpisujemy tylko \"hash\"",
+        ]
+    }
+    Slide{
+        id: slide_15
+        title: "Narzędzia"
+        content: [
+            "PGP -> PGPCorporation -> Symantec",
+            " rozwiązanei komercyjne",
+            " kod źródłowy dostępny",
+            "GnuPG",
+            "GPG4Win"
+        ]
+        notes: "
+http://www.symantec.com/connect/downloads/symantec-pgp-desktop-peer-review-source-code
+http://www.gnupg.org/
+http://www.gpg4win.org/
+"
+        Rectangle{
+            width: parent.width * 0.03
+            height: width
+            color: "#5500dd00"
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    console.log("show notes:" + kryptografiaId.showNotes)
+                    kryptografiaId.showNotes= !kryptografiaId.showNotes;
+                }
+            }
+        }
+    }
+    Slide{
+        id: slide_16
+        title: "Generowanie kluczy publicznych"
+    }
+    Slide{
+        id: slide_17
+        title: "Generowanie podkluczy"
+    }
+    Slide{
+        id: slide_18
+        title: "Eksport podkluczy"
+    }
+    Slide{
+        id: slide_19
+        title: "Nowy \"KeyRing\""
+    }
+    Slide{
+        id: slide_20
+        title: "Import podkluczy"
+    }
+    Slide{
+        id: slide_21
+        title: "Eksport kluczy publicznych"
+    }
+    Slide{
+        id: slide_22
+        title: "Import i weryfikacja kluczy publicznych"
+    }
+    Slide{
+        id: slide_23
+        title: "Podpiswanie kluczy - certyfikaty"
+    }
+    Slide{
+        id: slide_24
+        title: "Import certyfikatu"
+    }
+    Slide{
+        id: slide_25
+        title: "Szyfrowanie Pliku"
+    }
+    Slide{
+        id: slide_26
+        title: "Podpisywanie pliku"
+    }
+    Slide{
+        id: slide_27
+        title: "Sprawdzenie podpisu"
+    }
+    Slide{
+        id: slide_28
+        title: "Odszyfrowanie pliku"
+    }
+    Slide{
+        id: slide_29
+        title: "OpenSSL/EasyRsa"
     }
 }

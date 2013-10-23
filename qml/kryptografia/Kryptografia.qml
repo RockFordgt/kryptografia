@@ -42,7 +42,7 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(14);
+        goToSlide(15);
     }
     Slide{
         id:slide_00
@@ -441,60 +441,90 @@ http://www.gpg4win.org/
             }
         }
     }
+//    CodeSlide{
+//        id: slide_16
+//        title: "Backup kluczy"
+//        code:"umask 077; tra cf $HOME/gpg-keyring.backup.tar -C $HOME .gnupg"
+//        contentWidth: width/2
+//    }
     Slide{
         id: slide_16
-        title: "Generowanie kluczy publicznych"
+        title: "Generowanie klucza głównego"
+        Column{
+            anchors.fill: parent
+            SlideText{
+                width: parent.width
+                text: "Tworzymy miejsce na tymczasowy pęk kluczy i eksportujemy odpowiednią zmienną."
+                wrapMode: Text.Wrap
+            }
+            CodeRect{
+//                anchors.left: parent.left
+//                height:parent.height
+//                width:parent.width/2
+                width:parent.width
+                height: 140
+                code:"mkdir ~/.gpg_tmp
+chmod 700 ~/.gpg_tmp
+export GNUPGHOME=~/.gpg_tmp
+gpg --gen-key"
+            }
+        }
     }
-    Slide{
+
+    CodeSlide{
         id: slide_17
+    }
+
+    Slide{
+        id: slide_18
         title: "Generowanie podkluczy"
     }
     Slide{
-        id: slide_18
+        id: slide_19
         title: "Eksport podkluczy"
     }
     Slide{
-        id: slide_19
+        id: slide_20
         title: "Nowy \"KeyRing\""
     }
     Slide{
-        id: slide_20
+        id: slide_21
         title: "Import podkluczy"
     }
     Slide{
-        id: slide_21
+        id: slide_22
         title: "Eksport kluczy publicznych"
     }
     Slide{
-        id: slide_22
+        id: slide_23
         title: "Import i weryfikacja kluczy publicznych"
     }
     Slide{
-        id: slide_23
+        id: slide_24
         title: "Podpiswanie kluczy - certyfikaty"
     }
     Slide{
-        id: slide_24
+        id: slide_25
         title: "Import certyfikatu"
     }
     Slide{
-        id: slide_25
+        id: slide_26
         title: "Szyfrowanie Pliku"
     }
     Slide{
-        id: slide_26
+        id: slide_27
         title: "Podpisywanie pliku"
     }
     Slide{
-        id: slide_27
+        id: slide_28
         title: "Sprawdzenie podpisu"
     }
     Slide{
-        id: slide_28
+        id: slide_29
         title: "Odszyfrowanie pliku"
     }
     Slide{
-        id: slide_29
+        id: slide_30
         title: "OpenSSL/EasyRsa"
     }
 }

@@ -42,7 +42,7 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(15);
+        goToSlide(18);
     }
     Slide{
         id:slide_00
@@ -99,13 +99,6 @@ brazylijski Petrobras"
             ListElement{src:"Keys_04.svg"}
             ListElement{src:"Keys_05.svg"}
         }
-//        Rectangle{
-
-//            anchors.right: parent.right
-//            anchors.bottom: parent.bottom
-//            width:350
-//            height: 350
-//            color:"transparent"
             Image{
                 id:kluczeImg
                 anchors.right: parent.right
@@ -313,11 +306,11 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
                 }
                 SlideText{
                     fontScale:0.6
-                    text: "- DES
+                    text: "- ASE
 - 3DES
-- IDEA
-- ASE
+- DES
 - Blowfish
+- IDEA
 - Serpent
 - Twofish"
                 }
@@ -441,12 +434,6 @@ http://www.gpg4win.org/
             }
         }
     }
-//    CodeSlide{
-//        id: slide_16
-//        title: "Backup kluczy"
-//        code:"umask 077; tra cf $HOME/gpg-keyring.backup.tar -C $HOME .gnupg"
-//        contentWidth: width/2
-//    }
     Slide{
         id: slide_16
         title: "Generowanie klucza głównego"
@@ -454,13 +441,10 @@ http://www.gpg4win.org/
             anchors.fill: parent
             SlideText{
                 width: parent.width
-                text: "Tworzymy miejsce na tymczasowy pęk kluczy i eksportujemy odpowiednią zmienną."
+                text: "Tworzymy miejsce na tymczasowy pęk kluczy i eksportujemy GNUPGHOME. Zawartość zmiennej pokazuje katalog zawirający pliki gpg."
                 wrapMode: Text.Wrap
             }
             CodeRect{
-//                anchors.left: parent.left
-//                height:parent.height
-//                width:parent.width/2
                 width:parent.width
                 height: 140
                 code:"mkdir ~/.gpg_tmp
@@ -470,61 +454,139 @@ gpg --gen-key"
             }
         }
     }
-
-    CodeSlide{
+    Slide{
         id: slide_17
+        title:"Generowanie klucza"
+        Column{
+            width: parent.width
+            CodeRect{
+                width: parent.width
+                height: 125
+                code:"gpg --gen-key"
+            }
+            SlideText{
+                text:"Po drodze trzeba odpowiedzieć na kilka ptyań:
+- Rodzaj generowanych kluczy
+- Wielkość klucza
+- okres ważności
+- Imię Nazwisko
+- Email
+- Komentarz (psełdonim)
+- Hasło
+Na koniec program wypisze informacje o kluczach"
+            }
+        }
     }
 
     Slide{
         id: slide_18
-        title: "Generowanie podkluczy"
+        title: "Podklucze (subkeys)"
+        content:[
+            "Główny klucz to nasza tożsamość",
+            "Podklucze można unieważniać - i nie tracić tożsamości",
+            "Podklucze można wrzucać w miejsca mniej bezpieczne",
+            " tablety",
+            " telefony",
+            " inne komputery"
+        ]
     }
     Slide{
         id: slide_19
+        title: "generowanie podkluczy"
+        Column{
+            width: parent.width
+            spacing: height*0.1
+            Row{
+                width: parent.width
+                spacing: width*0.01
+                CodeRect{
+                    width: parent.width/2
+                    height: 130
+                    code: "gpg --list-keys"
+                }
+                SlideText{
+                    width: parent.width/2
+                    text:"Znajdź sówj klucz (a właściwie ID klucza)"
+                }
+            }
+            Row{
+                width: parent.width
+                spacing: width*0.01
+                CodeRect{
+                    width: parent.width/2
+                    height: 130
+                    code: "gpg --edit-key ID_klucza
+gpg> addkey
+gpg> save"
+                }
+                SlideText{
+                    width: parent.width/2
+                    text:"Edytujemy klucz główny, a następnie dodajemy nowy klucz zapisujemy wprowadzone zmiany."
+                }
+            }
+            SlideText{
+                width: parent.width
+                text: "Po wykonaniu powyższych poleceń mamy przygotowany klucz, wraz z podkluczami, których będziemy używać na codzień. Dobrze jest zrobić kopię bezpieczeństwa: skopiować cały katalog na pendriva i wrzucić do sejfu."
+            }
+        }
+    }
+
+    Slide{
+        id: slide_119
         title: "Eksport podkluczy"
     }
     Slide{
-        id: slide_20
+        id: slide_120
         title: "Nowy \"KeyRing\""
     }
     Slide{
-        id: slide_21
+        id: slide_121
         title: "Import podkluczy"
     }
     Slide{
-        id: slide_22
+        id: slide_122
         title: "Eksport kluczy publicznych"
     }
     Slide{
-        id: slide_23
+        id: slide_123
         title: "Import i weryfikacja kluczy publicznych"
     }
     Slide{
-        id: slide_24
+        id: slide_124
         title: "Podpiswanie kluczy - certyfikaty"
     }
     Slide{
-        id: slide_25
+        id: slide_125
         title: "Import certyfikatu"
     }
     Slide{
-        id: slide_26
+        id: slide_126
         title: "Szyfrowanie Pliku"
     }
     Slide{
-        id: slide_27
+        id: slide_127
         title: "Podpisywanie pliku"
     }
     Slide{
-        id: slide_28
+        id: slide_128
         title: "Sprawdzenie podpisu"
     }
     Slide{
-        id: slide_29
+        id: slide_129
         title: "Odszyfrowanie pliku"
     }
     Slide{
-        id: slide_30
+        id: slide_129_1
+        title: "Links"
+        content: [
+            "https://wiki.debian.org/subkeys",
+            "https://wiki.debian.org/Keysigning",
+            "https://we.riseup.net/riseuplabs+paow/openpgp-best-practices",pr
+        ]
+    }
+
+    Slide{
+        id: slide_130
         title: "OpenSSL/EasyRsa"
     }
 }

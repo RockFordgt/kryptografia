@@ -42,7 +42,7 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(18);
+        goToSlide(23);
     }
     Slide{
         id:slide_00
@@ -419,20 +419,6 @@ http://www.symantec.com/connect/downloads/symantec-pgp-desktop-peer-review-sourc
 http://www.gnupg.org/
 http://www.gpg4win.org/
 "
-        Rectangle{
-            width: parent.width * 0.03
-            height: width
-            color: "#5500dd00"
-            anchors.right: parent.right
-            anchors.bottom: parent.bottom
-            MouseArea{
-                anchors.fill: parent
-                onClicked: {
-                    console.log("show notes:" + kryptografiaId.showNotes)
-                    kryptografiaId.showNotes= !kryptografiaId.showNotes;
-                }
-            }
-        }
     }
     Slide{
         id: slide_16
@@ -477,7 +463,6 @@ Na koniec program wypisze informacje o kluczach"
             }
         }
     }
-
     Slide{
         id: slide_18
         title: "Podklucze (subkeys)"
@@ -501,7 +486,6 @@ Na koniec program wypisze informacje o kluczach"
                 spacing: width*0.01
                 CodeRect{
                     width: parent.width/2
-                    height: 130
                     code: "gpg --list-keys"
                 }
                 SlideText{
@@ -514,7 +498,6 @@ Na koniec program wypisze informacje o kluczach"
                 spacing: width*0.01
                 CodeRect{
                     width: parent.width/2
-                    height: 130
                     code: "gpg --edit-key ID_klucza
 gpg> addkey
 gpg> save"
@@ -526,34 +509,127 @@ gpg> save"
             }
             SlideText{
                 width: parent.width
-                text: "Po wykonaniu powyższych poleceń mamy przygotowany klucz, wraz z podkluczami, których będziemy używać na codzień. Dobrze jest zrobić kopię bezpieczeństwa: skopiować cały katalog na pendriva i wrzucić do sejfu."
+                text: "Po wykonaniu powyższych poleceń mamy przygotowany klucz, wraz z podkluczami, których będziemy używać na codzień. Cały katalog należy skopiować na pendriva i wrzucić do sejfu."
             }
         }
     }
-
     Slide{
-        id: slide_119
+        id: slide_20
         title: "Eksport podkluczy"
+        Column{
+            width: parent.width
+            spacing: width * 0.01
+            CodeRect{
+                width: parent.width
+                code: "gpg --list-secret-key
+gpg --export-secret-subkeys SUB_KEY_ID1! SUB_KEY_ID_2! ... > subkeys
+gpg --export MASTER_KEY_ID > pubkeys"
+            }
+            SlideText{
+                width: parent.width
+                text: "1. Wyświetlamy klucze prywatne.
+2. Eksportujemy podklucze. Wykrzyknik jest potrzebny, zostanie wyeksprtowany konkretny klucz bez wyliczania \"który będzie najlepszy\".
+W bashu wykrzyknik musi być poprzedzony backslashem (\\!).
+3. Eksportujemy klucze publiczne, \"pubkeys\" możemy/pwinniśmy rozdawać."
+            }
+        }
+        notes: "Co oznacza wykrzyknik:
+   http://superuser.com/questions/335664/how-does-gpg-handle-multiple-keys-in-a-keypair"
     }
     Slide{
-        id: slide_120
+        id: slide_21
         title: "Nowy \"KeyRing\""
+        Column{
+            width: parent.width
+            spacing: width*0.01
+            CodeRect{
+                width: parent.width
+                code:"unset GNUPGHOME
+gpg --import pubkeys subkeys
+gpg --list-secret-keys
+rm subkeys"
+            }
+            SlideText{
+                width: parent.width
+                text:"1. Usuwamy zmienną GNUPGHOME, dzięk temu gpg będzie pokazywał na domyślny katalog z kluczami.
+2. Importujemy klucze.
+3. Wyświetlamy klucze prywatne. Klucz prywatny jest oznaczoy jako \"sec#\", znak # oznacza że brakuje klucza prywatnego.
+4. Kasujemy niepotrzebny już plik z kluczami prywatnymi."
+            }
+        }
     }
     Slide{
-        id: slide_121
-        title: "Import podkluczy"
+        id: slide_22
+        title: "Wymiana kluczy"
+        CodeRect{
+            anchors.right: parent.right
+            width: (parent.width/2)-15
+            height: 210
+            code: "gpg --export KEY_ID
+gpg --import key_file_name
+gpg --editkey KEY_ID
+gpg> fpr
+gpg> check
+gpg> sign"
+        }
+        contentWidth: (parent.width/2)-15
+        content: [
+            "Eksport klucza publicznego.",
+            "Import innych kluczy publicznych.",
+            "Edycja klucza.",
+            " Sprawdzenie odcisku",
+            " Kto już podpisał klucz",
+            " Podpisanie klucza",
+            "Klucze należy podpisywać z bezpiecznego konta"
+        ]
     }
     Slide{
-        id: slide_122
-        title: "Eksport kluczy publicznych"
+        id: slide_23
+        title: "Szyfrowanie dokumentów"
+        Column{
+            width: parent.width
+            spacing: width*0.01
+            CodeRect{
+                anchors.right: parent.right
+                width: parent.width
+                code: "gpg --output doc.gpg --encrypt --recipient cb@gmail.org doc
+gpg --output doc --decrypt doc.gpg"
+            }
+            SlideText{
+                text:
+                "--output <nazwa_pliku_po_zaszyfrowaniu>
+--encrypt
+--recipient <czyim kluczem szyfrować>
+\"--recipient\" musi być tyle razy ile jest osób
+jeśli nie ma ciebie na liście to nie odszyfrujesz pliku"
+            }
+        }
     }
     Slide{
-        id: slide_123
-        title: "Import i weryfikacja kluczy publicznych"
-    }
-    Slide{
-        id: slide_124
-        title: "Podpiswanie kluczy - certyfikaty"
+        id: slide_24
+        title:"Podpisywanie dokumentów"
+        Column{
+            width: parent.width
+            spacing: width*0.01
+            CodeRect{
+                anchors.right: parent.right
+                width: parent.width
+                height:180
+                code: "gpg --output doc.sig --sign doc
+gpg --output doc --decrypt doc.sig
+gpg --verify doc.sig doc
+gpg --clearsign doc
+gpg --output doc.sig ---detach-sign doc"
+            }
+            SlideText {
+                text:"--output <nazwa_pliku_po_podpisaniu>
+--sign
+--decrypt <nazwa_pliku>
+--verify
+--clearsign
+--detach-sign"
+            }
+        }
     }
     Slide{
         id: slide_125
@@ -581,7 +657,7 @@ gpg> save"
         content: [
             "https://wiki.debian.org/subkeys",
             "https://wiki.debian.org/Keysigning",
-            "https://we.riseup.net/riseuplabs+paow/openpgp-best-practices",pr
+            "https://we.riseup.net/riseuplabs+paow/openpgp-best-practices"
         ]
     }
 

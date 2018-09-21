@@ -42,7 +42,7 @@ OpacityTransitionPresentation {
 
     Component.onCompleted: {
         //console.log("parent:" + parent)
-        goToSlide(23);
+//        goToSlide(23);
     }
     Slide{
         id:slide_00
@@ -103,7 +103,7 @@ brazylijski Petrobras"
                 id:kluczeImg
                 anchors.right: parent.right
                 anchors.bottom: parent.bottom
-                //source: "Keys_01.svg"
+                source: "Keys_05.svg"
                 width: 350
                 height: width
             }
@@ -122,14 +122,14 @@ brazylijski Petrobras"
                     //console.log("i:"+current)
                 }
             }
-            onVisibleChanged: {
-                //console.log("visible:" + visible)
-                if(visible){
-                    keysTimer.current = 0;
-                    keysTimer.start();
-                }else
-                    keysTimer.stop();
-            }
+//            onVisibleChanged: {
+//                //console.log("visible:" + visible)
+//                if(visible){
+//                    keysTimer.current = 0;
+//                    keysTimer.start();
+//                }else
+//                    keysTimer.stop();
+//            }
 
 //        }
     }
@@ -254,7 +254,7 @@ odszyfrować wiadomość zaszyfrowaną kluczem publicznym."
         ]
         Image {
             id: cryptFileAnimation
-            property int currentFrame: 0
+            property int currentFrame: 12
             source: cryptAnimationFrames.get(currentFrame).src
             width: parent.width*0.7
             height: parent.height/2
@@ -433,10 +433,12 @@ http://www.gpg4win.org/
             CodeRect{
                 width:parent.width
                 height: 140
-                code:"mkdir ~/.gpg_tmp
-chmod 700 ~/.gpg_tmp
-export GNUPGHOME=~/.gpg_tmp
-gpg --gen-key"
+                code:[
+                    "mkdir ~/.gpg_tmp",
+                    "chmod 700 ~/.gpg_tmp",
+                    "export GNUPGHOME=~/.gpg_tmp",
+                    "gpg --gen-key\"",
+                ]
             }
         }
     }
@@ -448,7 +450,7 @@ gpg --gen-key"
             CodeRect{
                 width: parent.width
                 height: 125
-                code:"gpg --gen-key"
+                code:["gpg --gen-key"]
             }
             SlideText{
                 text:"Po drodze trzeba odpowiedzieć na kilka ptyań:
@@ -486,7 +488,7 @@ Na koniec program wypisze informacje o kluczach"
                 spacing: width*0.01
                 CodeRect{
                     width: parent.width/2
-                    code: "gpg --list-keys"
+                    code:["gpg --list-keys"]
                 }
                 SlideText{
                     width: parent.width/2
@@ -498,9 +500,11 @@ Na koniec program wypisze informacje o kluczach"
                 spacing: width*0.01
                 CodeRect{
                     width: parent.width/2
-                    code: "gpg --edit-key ID_klucza
-gpg> addkey
-gpg> save"
+                    code:[
+                        "gpg --edit-key ID_klucza",
+                        "gpg> addkey",
+                        "gpg> save",
+                    ]
                 }
                 SlideText{
                     width: parent.width/2
@@ -521,9 +525,11 @@ gpg> save"
             spacing: width * 0.01
             CodeRect{
                 width: parent.width
-                code: "gpg --list-secret-key
-gpg --export-secret-subkeys SUB_KEY_ID1! SUB_KEY_ID_2! ... > subkeys
-gpg --export MASTER_KEY_ID > pubkeys"
+                code:[
+                    "gpg --list-secret-key",
+                    "gpg --export-secret-subkeys SUB_KEY_ID1! SUB_KEY_ID_2! ... > subkeys",
+                    "gpg --export MASTER_KEY_ID > pubkeys",
+                ]
             }
             SlideText{
                 width: parent.width
@@ -544,10 +550,12 @@ W bashu wykrzyknik musi być poprzedzony backslashem (\\!).
             spacing: width*0.01
             CodeRect{
                 width: parent.width
-                code:"unset GNUPGHOME
-gpg --import pubkeys subkeys
-gpg --list-secret-keys
-rm subkeys"
+                code:[
+                    "unset GNUPGHOME",
+                    "gpg --import pubkeys subkeys",
+                    "gpg --list-secret-keys",
+                    "rm subkeys",
+                ]
             }
             SlideText{
                 width: parent.width
@@ -565,12 +573,14 @@ rm subkeys"
             anchors.right: parent.right
             width: (parent.width/2)-15
             height: 210
-            code: "gpg --export KEY_ID
-gpg --import key_file_name
-gpg --editkey KEY_ID
-gpg> fpr
-gpg> check
-gpg> sign"
+            code:[
+                "gpg --export KEY_ID",
+                "gpg --import key_file_name",
+                "gpg --editkey KEY_ID",
+                "gpg> fpr",
+                "gpg> check",
+                "gpg> sign",
+            ]
         }
         contentWidth: (parent.width/2)-15
         content: [
@@ -592,8 +602,8 @@ gpg> sign"
             CodeRect{
                 anchors.right: parent.right
                 width: parent.width
-                code: "gpg --output doc.gpg --encrypt --recipient cb@gmail.org doc
-gpg --output doc --decrypt doc.gpg"
+                code:[ "gpg --output doc.gpg --encrypt --recipient cb@gmail.org doc
+gpg --output doc --decrypt doc.gpg"]
             }
             SlideText{
                 text:
@@ -615,11 +625,13 @@ jeśli nie ma ciebie na liście to nie odszyfrujesz pliku"
                 anchors.right: parent.right
                 width: parent.width
                 height:180
-                code: "gpg --output doc.sig --sign doc
-gpg --output doc --decrypt doc.sig
-gpg --verify doc.sig doc
-gpg --clearsign doc
-gpg --output doc.sig ---detach-sign doc"
+                code:[
+                    "gpg --output doc.sig --sign doc",
+                    "gpg --output doc --decrypt doc.sig",
+                    "gpg --verify doc.sig doc",
+                    "gpg --clearsign doc",
+                    "gpg --output doc.sig ---detach-sign doc",
+                ]
             }
             SlideText {
                 text:"--output <nazwa_pliku_po_podpisaniu>
@@ -632,27 +644,7 @@ gpg --output doc.sig ---detach-sign doc"
         }
     }
     Slide{
-        id: slide_125
-        title: "Import certyfikatu"
-    }
-    Slide{
-        id: slide_126
-        title: "Szyfrowanie Pliku"
-    }
-    Slide{
-        id: slide_127
-        title: "Podpisywanie pliku"
-    }
-    Slide{
-        id: slide_128
-        title: "Sprawdzenie podpisu"
-    }
-    Slide{
-        id: slide_129
-        title: "Odszyfrowanie pliku"
-    }
-    Slide{
-        id: slide_129_1
+        id: slide_25
         title: "Links"
         content: [
             "https://wiki.debian.org/subkeys",
@@ -661,8 +653,82 @@ gpg --output doc.sig ---detach-sign doc"
         ]
     }
 
-    Slide{
-        id: slide_130
-        title: "OpenSSL/EasyRsa"
-    }
+//    Slide{
+//        id: slide_26
+//        title: "PKI"
+//        content: [
+//            "Ruch między klientem a serwrem też trzeba szyfrować",
+//            "Różne protokoły sprowadzją się tego co już znamy",
+//            " Każdy ma swój klucz publiczny",
+//            " Za pomocą kluczy publicznych negocjujemy klucz sesji",
+//            " Po wybraniu klucza sesji (i algorytmu) całość szyfrujemy symetrczynie",
+//            "Czego brakuje w tym obrazku?"
+//        ]
+//    }
+//    Slide{
+//        id: slide_27
+//        title: "PKI"
+//        content:[
+//            "Czy serwer jest napawdę \"Tym\" Serwerem",
+//            "Web of trust = Certificate Authority",
+//            "Podpisywaniem kluczy zajmują się Centra Autoryzacyjne",
+//            "Centra Autoryzacyjne są oczywiście podpisane przez inne centra",
+//            "PKI",
+//            "x509..."
+//        ]
+//    }
+//    Slide{
+//        id: slide_28
+//        title: "OpenSSL"
+//        content: [
+//            "Nóż szwajcarski w kryptografi PKI",
+//            "dość dużo paramtrów",
+//            "dziwny plik konfiguracyjny",
+//            "kłopotliwy w codziennym użyciu",
+//        ]
+//    }
+//    Slide{
+//        id: slide_29
+//        title: "OpenSSL/EasyRsa"
+//        content: [
+//            "Zestaw skryptów ułatwiających pracę z OpenSSL",
+//            "Krótkie łatwe do zapamiętania komendy",
+//            "Skrypte zarówno do prowadzenia małego CA jak i dla klientów",
+//            "zazwyczaj w pakiece: OpenVPN",
+//            "ostatnio we własnym: easy-rsa"
+//        ]
+//    }
+//    Slide{
+//        id: slide_134
+//        title: "EasyRsa"
+//        content:[
+//            "gdzie są skrypty?",
+//            "gdzie jest konfiguracja?",
+//            "a gdzie jest dokumentacja?"
+//        ]
+//    }
+//    Slide{
+//        id: slide_135
+//        title: "OpenSSL/EasyRsa"
+//    }
+//    Slide{
+//        id: slide_136
+//        title: "OpenSSL/EasyRsa"
+//    }
+//    Slide{
+//        id: slide_137
+//        title: "OpenSSL/EasyRsa"
+//    }
+//    Slide{
+//        id: slide_138
+//        title: "OpenSSL/EasyRsa"
+//    }
+//    Slide{
+//        id: slide_139
+//        title: "OpenSSL/EasyRsa"
+//    }
+//    Slide{
+//        id: slide_140
+//        title: "OpenSSL/EasyRsa"
+//    }
 }

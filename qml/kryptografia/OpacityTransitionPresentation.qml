@@ -92,7 +92,10 @@ Presentation {
             NumberAnimation { target: toSlide; property: "opacity"; from: 0; to: 1; duration: deck.transitionTime; easing.type: Easing.InQuart }
             NumberAnimation { target: toSlide; property: "scale"; from: 1.1; to: 1; duration: deck.transitionTime; easing.type: Easing.InOutQuart }
         }
-        PropertyAction { target: fromSlide; property: "visible"; value: false }
+        PropertyAction {
+            target: fromSlide;
+            property: "visible";
+            value: false }
         PropertyAction { target: fromSlide; property: "scale"; value: 1 }
         PropertyAction { target: deck; property: "inTransition"; value: false }
     }
